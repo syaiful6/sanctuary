@@ -11,6 +11,7 @@ describe('on', function() {
   it('is a quaternary function', function() {
     eq(typeof S.on, 'function');
     eq(S.on.length, 4);
+    eq(S.on.toString(), 'on :: (b -> b -> c) -> (a -> b) -> a -> a -> c');
   });
 
   it('passes the last two arguments through the modifying function into the converging function', function() {

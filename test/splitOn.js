@@ -1,13 +1,10 @@
 'use strict';
 
-var throws = require('assert').throws;
-
 var jsc = require('jsverify');
 
 var S = require('..');
 
 var eq = require('./internal/eq');
-var errorEq = require('./internal/errorEq');
 
 
 describe('splitOn', function() {
@@ -15,32 +12,7 @@ describe('splitOn', function() {
   it('is a binary function', function() {
     eq(typeof S.splitOn, 'function');
     eq(S.splitOn.length, 2);
-  });
-
-  it('type checks its arguments', function() {
-    throws(function() { S.splitOn(/x/); },
-           errorEq(TypeError,
-                   'Invalid value\n' +
-                   '\n' +
-                   'splitOn :: String -> String -> Array String\n' +
-                   '           ^^^^^^\n' +
-                   '             1\n' +
-                   '\n' +
-                   '1)  /x/ :: RegExp\n' +
-                   '\n' +
-                   'The value at position 1 is not a member of ‘String’.\n'));
-
-    throws(function() { S.splitOn('', null); },
-           errorEq(TypeError,
-                   'Invalid value\n' +
-                   '\n' +
-                   'splitOn :: String -> String -> Array String\n' +
-                   '                     ^^^^^^\n' +
-                   '                       1\n' +
-                   '\n' +
-                   '1)  null :: Null\n' +
-                   '\n' +
-                   'The value at position 1 is not a member of ‘String’.\n'));
+    eq(S.splitOn.toString(), 'splitOn :: String -> String -> Array String');
   });
 
   it('splits a string at occurrences of a separator', function() {
