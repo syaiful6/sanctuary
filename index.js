@@ -2991,6 +2991,98 @@
   }
   S.mean = def('mean', {f: [Foldable]}, [f, $Maybe($.FiniteNumber)], mean);
 
+  //# lt :: Ord a => a -> a -> Boolean
+  //.
+  //. Returns `true` if its first argument is smaller than its second
+  //. argument; `false` otherwise.
+  //.
+  //. Strings are compared lexicographically. Specifically, the Unicode
+  //. code point value of each character in the first string is compared
+  //. to the value of the corresponding character in the second string.
+  //.
+  //. See also [`lte`](#lte), [`gt`](#gt), and [`gte`](#gte).
+  //.
+  //. ```javascript
+  //. > S.lt(10, 2)
+  //. false
+  //.
+  //. > S.lt('10', '2')
+  //. true
+  //. ```
+  function lt(x, y) {
+    return x < y;
+  }
+  S.lt = def('lt', {a: [Ord]}, [a, a, $.Boolean], lt);
+
+  //# lte :: Ord a => a -> a -> Boolean
+  //.
+  //. Returns `true` if its first argument is smaller than or equal to
+  //. its second argument; `false` otherwise.
+  //.
+  //. Strings are compared lexicographically. Specifically, the Unicode
+  //. code point value of each character in the first string is compared
+  //. to the value of the corresponding character in the second string.
+  //.
+  //. See also [`lt`](#lt), [`gt`](#gt), and [`gte`](#gte).
+  //.
+  //. ```javascript
+  //. > S.lte(10, 2)
+  //. false
+  //.
+  //. > S.lte('10', '2')
+  //. true
+  //. ```
+  function lte(x, y) {
+    return x <= y;
+  }
+  S.lte = def('lte', {a: [Ord]}, [a, a, $.Boolean], lte);
+
+  //# gt :: Ord a => a -> a -> Boolean
+  //.
+  //. Returns `true` if its first argument is larger than its second
+  //. argument; `false` otherwise.
+  //.
+  //. Strings are compared lexicographically. Specifically, the Unicode
+  //. code point value of each character in the first string is compared
+  //. to the value of the corresponding character in the second string.
+  //.
+  //. See also [`gte`](#gte), [`lt`](#lt), and [`lte`](#lte).
+  //.
+  //. ```javascript
+  //. > S.gt(10, 2)
+  //. true
+  //.
+  //. > S.gt('10', '2')
+  //. false
+  //. ```
+  function gt(x, y) {
+    return x > y;
+  }
+  S.gt = def('gt', {a: [Ord]}, [a, a, $.Boolean], gt);
+
+  //# gte :: Ord a => a -> a -> Boolean
+  //.
+  //. Returns `true` if its first argument is larger than or equal to
+  //. its second argument; `false` otherwise.
+  //.
+  //. Strings are compared lexicographically. Specifically, the Unicode
+  //. code point value of each character in the first string is compared
+  //. to the value of the corresponding character in the second string.
+  //.
+  //. See also [`gt`](#gt), [`lt`](#lt), and [`lte`](#lte).
+  //.
+  //. ```javascript
+  //. > S.gte(10, 2)
+  //. true
+  //.
+  //. > S.gte('10', '2')
+  //. false
+  //. ```
+  function gte(x, y) {
+    return x >= y;
+  }
+  S.gte = def('gte', {a: [Ord]}, [a, a, $.Boolean], gte);
+
   //# min :: Ord a => a -> a -> a
   //.
   //. Returns the smaller of its two arguments.
