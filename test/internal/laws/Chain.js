@@ -3,10 +3,12 @@
 var jsc = require('jsverify');
 var Z = require('sanctuary-type-classes');
 
+var S = require('../../..');
+
 
 var associativity = function(a, f, g) {
   var lhs = Z.chain(g, Z.chain(f, a));
-  var rhs = Z.chain(function(x) { return Z.chain(g, f(x)); }, a);
+  var rhs = Z.chain(S.compose(S.chain(g), f), a);
   return Z.equals(lhs, rhs);
 };
 

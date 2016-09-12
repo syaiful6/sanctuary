@@ -19,8 +19,8 @@ var homomorphism = function(a, f, x) {
 };
 
 var interchange = function(a, f, x) {
-  var lhs = Z.ap(Z.of(a.constructor, function(f) { return f(x); }), a);
-  var rhs = Z.ap(a, Z.of(a.constructor, x));
+  var lhs = Z.ap(a, Z.of(a.constructor, x));
+  var rhs = Z.ap(Z.of(a.constructor, S.T(x)), a);
   return Z.equals(lhs, rhs);
 };
 

@@ -9,21 +9,21 @@ var Compose = require('../Compose');
 
 
 var naturality = function(F, G, t, u) {
-  var lhs = t(Z.traverse(function(x) { return Z.of(F, x); }, S.I, u));
-  var rhs = Z.traverse(function(x) { return Z.of(G, x); }, t, u);
+  var lhs = t(Z.traverse(S.of(F), S.I, u));
+  var rhs = Z.traverse(S.of(G), t, u);
   return Z.equals(lhs, rhs);
 };
 
 var identity = function(F, u) {
-  var lhs = Z.traverse(function(x) { return Z.of(F, x); }, function(x) { return Z.of(F, x); }, u);
+  var lhs = Z.traverse(S.of(F), S.of(F), u);
   var rhs = Z.of(F, u);
   return Z.equals(lhs, rhs);
 };
 
 var composition = function(F, G, u) {
   var C = Compose(F)(G);
-  var lhs = Z.traverse(function(x) { return Z.of(C, x); }, C, u);
-  var rhs = C(Z.map(function(x) { return Z.traverse(function(x) { return Z.of(G, x); }, S.I, x); }, Z.traverse(function(x) { return Z.of(F, x); }, S.I, u)));
+  var lhs = Z.traverse(S.of(C), C, u);
+  var rhs = C(Z.map(S.traverse(S.of(G), S.I), Z.traverse(S.of(F), S.I, u)));
   return Z.equals(lhs, rhs);
 };
 

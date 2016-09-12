@@ -13,7 +13,7 @@ var identity = function(a) {
 };
 
 var composition = function(a, f, g) {
-  var lhs = Z.map(function(x) { return f(g(x)); }, a);
+  var lhs = Z.map(S.compose(f, g), a);
   var rhs = Z.map(f, Z.map(g, a));
   return Z.equals(lhs, rhs);
 };

@@ -3,6 +3,8 @@
 var jsc = require('jsverify');
 var Z = require('sanctuary-type-classes');
 
+var S = require('../../..');
+
 
 var leftIdentity = function(a, f, x) {
   var lhs = Z.chain(f, Z.of(a.constructor, x));
@@ -11,7 +13,7 @@ var leftIdentity = function(a, f, x) {
 };
 
 var rightIdentity = function(a, x) {
-  var lhs = Z.chain(function(x) { return Z.of(a.constructor, x); }, a);
+  var lhs = Z.chain(S.of(a.constructor), a);
   var rhs = a;
   return Z.equals(lhs, rhs);
 };
