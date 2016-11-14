@@ -80,7 +80,7 @@ describe('Right', function() {
                    '                               ^^^^^^^^^^^              ^\n' +
                    '                                                        1\n' +
                    '\n' +
-                   '1)  /xxx/ :: RegExp\n' +
+                   '1)  /xxx/ :: RegExp, NonGlobalRegExp\n' +
                    '\n' +
                    '‘Either#concat’ requires ‘b’ to satisfy the Semigroup type-class constraint; the value at position 1 does not.\n'));
 
@@ -92,7 +92,7 @@ describe('Right', function() {
                    '                  ^^^^^^^^^^^                                       ^\n' +
                    '                                                                    1\n' +
                    '\n' +
-                   '1)  /xxx/ :: RegExp\n' +
+                   '1)  /xxx/ :: RegExp, NonGlobalRegExp\n' +
                    '\n' +
                    '‘Either#concat’ requires ‘a’ to satisfy the Semigroup type-class constraint; the value at position 1 does not.\n'));
 
@@ -104,7 +104,7 @@ describe('Right', function() {
                    '                               ^^^^^^^^^^^                            ^\n' +
                    '                                                                      1\n' +
                    '\n' +
-                   '1)  /xxx/ :: RegExp\n' +
+                   '1)  /xxx/ :: RegExp, NonGlobalRegExp\n' +
                    '\n' +
                    '‘Either#concat’ requires ‘b’ to satisfy the Semigroup type-class constraint; the value at position 1 does not.\n'));
   });

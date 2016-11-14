@@ -24,7 +24,7 @@ describe('min', function() {
                    '       ^^^^^    ^\n' +
                    '                1\n' +
                    '\n' +
-                   '1)  /x/ :: RegExp\n' +
+                   '1)  /x/ :: RegExp, NonGlobalRegExp\n' +
                    '\n' +
                    '‘min’ requires ‘a’ to satisfy the Ord type-class constraint; the value at position 1 does not.\n'));
 

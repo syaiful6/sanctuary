@@ -341,8 +341,22 @@
     }
   );
 
+  //  GlobalRegExp :: Type
+  var GlobalRegExp = $.NullaryType(
+    'sanctuary/GlobalRegExp',
+    function(x) { return $.RegExp._test(x) && x.global; }
+  );
+
+  //  NonGlobalRegExp :: Type
+  var NonGlobalRegExp = $.NullaryType(
+    'sanctuary/NonGlobalRegExp',
+    function(x) { return $.RegExp._test(x) && !x.global; }
+  );
+
   //  defaultEnv :: Array Type
   var defaultEnv = $.env.concat([
+    GlobalRegExp,
+    NonGlobalRegExp,
     $.FiniteNumber,
     $.NonZeroFiniteNumber,
     $Either,
@@ -3137,6 +3151,25 @@
 
   //. ### RegExp
 
+  //  Match :: Type
+  var Match = $.RecordType({
+    match: $.String,
+    groups: $.Array($Maybe($.String))
+  });
+
+  //  toMatch :: Array String? -> Match
+  var toMatch = function(ss) {
+    return {match: ss[0], groups: ss.slice(1).map(toMaybe)};
+  };
+
+  //  withRegex :: (RegExp, () -> a) -> a
+  var withRegex = function(pattern, thunk) {
+    var lastIndex = pattern.lastIndex;
+    var result = thunk();
+    pattern.lastIndex = lastIndex;
+    return result;
+  };
+
   //# regex :: RegexFlags -> String -> RegExp
   //.
   //. Takes a [RegexFlags][] and a pattern, and returns a RegExp.
@@ -3181,36 +3214,67 @@
   //. false
   //. ```
   function test(pattern, s) {
-    var lastIndex = pattern.lastIndex;
-    var result = pattern.test(s);
-    pattern.lastIndex = lastIndex;
-    return result;
+    return withRegex(pattern, function() { return pattern.test(s); });
   }
   S.test = def('test', {}, [$.RegExp, $.String, $.Boolean], test);
 
-  //# match :: RegExp -> String -> Maybe (Array (Maybe String))
+  //# match :: NonGlobalRegExp -> String -> Maybe { match :: String, groups :: Array (Maybe String) }
   //.
-  //. Takes a pattern and a string, and returns Just an array of matches
-  //. if the pattern matches the string; Nothing otherwise. Each match has
-  //. type `Maybe String`, where Nothing represents an unmatched optional
-  //. capturing group.
+  //. Takes a pattern and a string, and returns Just a match record if the
+  //. pattern matches the string; Nothing otherwise.
+  //.
+  //. `groups :: Array (Maybe String)` acknowledges the existence of optional
+  //. capturing groups.
+  //.
+  //. Properties:
+  //.
+  //.   - `forall p :: Pattern, s :: String.
+  //.      S.head(S.matchAll(S.regex("g", p), s)) = S.match(S.regex("", p), s)`
+  //.
+  //. See also [`matchAll`](#matchAll).
   //.
   //. ```javascript
   //. > S.match(/(good)?bye/, 'goodbye')
-  //. Just([Just('goodbye'), Just('good')])
+  //. Just({match: 'goodbye', groups: [Just('good')]})
   //.
   //. > S.match(/(good)?bye/, 'bye')
-  //. Just([Just('bye'), Nothing])
+  //. Just({match: 'bye', groups: [Nothing]})
   //. ```
   function match(pattern, s) {
-    var match = s.match(pattern);
-    return match == null ? Nothing : Just(match.map(toMaybe));
+    return Maybe$prototype$map(toMaybe(s.match(pattern)), toMatch);
   }
   S.match =
-  def('match',
-      {},
-      [$.RegExp, $.String, $Maybe($.Array($Maybe($.String)))],
-      match);
+  def('match', {}, [NonGlobalRegExp, $.String, $Maybe(Match)], match);
+
+  //# matchAll :: GlobalRegExp -> String -> Array { match :: String, groups :: Array (Maybe String) }
+  //.
+  //. Takes a pattern and a string, and returns an array of match records.
+  //.
+  //. `groups :: Array (Maybe String)` acknowledges the existence of optional
+  //. capturing groups.
+  //.
+  //. See also [`match`](#match).
+  //.
+  //. ```javascript
+  //. > S.matchAll(/@([a-z]+)/g, 'Hello, world!')
+  //. []
+  //.
+  //. > S.matchAll(/@([a-z]+)/g, 'Hello, @foo! Hello, @bar! Hello, @baz!')
+  //. [ {match: '@foo', groups: [Just('foo')]},
+  //. . {match: '@bar', groups: [Just('bar')]},
+  //. . {match: '@baz', groups: [Just('baz')]} ]
+  //. ```
+  function matchAll(pattern, s) {
+    return withRegex(pattern, function() {
+      return unfoldr(function(_) {
+        return Maybe$prototype$map(toMaybe(pattern.exec(s)), function(ss) {
+          return [toMatch(ss), null];
+        });
+      }, []);
+    });
+  }
+  S.matchAll =
+  def('matchAll', {}, [GlobalRegExp, $.String, $.Array(Match)], matchAll);
 
   //. ### String
 

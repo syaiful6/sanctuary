@@ -24,7 +24,7 @@ describe('eitherToMaybe', function() {
                    '                 ^^^^^^^^^^\n' +
                    '                     1\n' +
                    '\n' +
-                   '1)  /XXX/ :: RegExp\n' +
+                   '1)  /XXX/ :: RegExp, NonGlobalRegExp\n' +
                    '\n' +
                    'The value at position 1 is not a member of ‘Either a b’.\n'));
   });

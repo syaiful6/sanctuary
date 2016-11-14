@@ -26,7 +26,7 @@ describe('splitOn', function() {
                    '           ^^^^^^\n' +
                    '             1\n' +
                    '\n' +
-                   '1)  /x/ :: RegExp\n' +
+                   '1)  /x/ :: RegExp, NonGlobalRegExp\n' +
                    '\n' +
                    'The value at position 1 is not a member of ‘String’.\n'));
 
